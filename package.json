@@ -12,7 +12,7 @@
     "url": "https://github.com/trgkanki/trgkanki-template-cli"
   },
   "scripts": {
-    "prepublish": "tsc"
+    "prepublishOnly": "tsc"
   },
   "homepage": "https://github.com/trgkanki/trgkanki-template-cli",
   "bugs": {
