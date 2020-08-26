@@ -42,7 +42,7 @@
   },
   "husky": {
     "hooks": {
-      "pre-commit": "git-branch-is --not master && lint-staged"
+      "pre-commit": "git-branch-is --not master && lint-staged && tsc --noEmit"
     }
   },
   "lint-staged": {
