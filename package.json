@@ -2,7 +2,6 @@
   "name": "trgkanki-template-cli",
   "version": "0.1.0",
   "description": "scripts for trgkanki/addon-template",
-  "main": "./dist/index.js",
   "bin": {
     "trgkanki-template": "./dist/index.js"
   },
@@ -14,8 +13,21 @@
     "type": "git",
     "url": "https://github.com/trgkanki/trgkanki-template-cli"
   },
+  "scripts": {
+    "prepublish": "tsc"
+  },
+  "homepage": "https://github.com/trgkanki/trgkanki-template-cli",
+  "bugs": {
+    "url": "https://github.com/trgkanki/trgkanki-template-cli/issues",
+    "email": "phu54321@naver.com"
+  },
   "author": "Hyun Woo Park",
   "license": "AGPL3",
+  "files": [
+    "dist",
+    "LICENSE",
+    "README.md"
+  ],
   "dependencies": {
     "cli-spinner": "^0.2.10",
     "date-fns": "^2.15.0",
@@ -54,8 +66,7 @@
   },
   "husky": {
     "hooks": {
-      "pre-commit": "git-branch-is --not master && lint-staged",
-      "pre-publish": "tsc"
+      "pre-commit": "git-branch-is --not master && lint-staged"
     }
   }
 }
