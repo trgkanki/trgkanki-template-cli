@@ -19,7 +19,6 @@ import dateFormat from 'date-fns/format'
 import shelljs from 'shelljs'
 import { v4 as uuidV4 } from 'uuid'
 import fs from 'fs'
-import process from 'process'
 
 function mergeMessage (baseBranch: string) {
   const dateString = dateFormat(new Date(), 'yyyy.MM-dd - %H:%M')

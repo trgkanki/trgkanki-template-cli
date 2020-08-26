@@ -1,4 +1,3 @@
-import process from 'process'
 import initRun from './init/index'
 
 async function main (argv: string[]): Promise<number> {
