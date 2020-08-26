@@ -13,62 +13,12 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import utcVersion from 'utc-version'
-import tmp from 'tmp'
 import fs from 'fs'
-import gitBranchIs from 'git-branch-is'
-
-import { checkCleanRepo, getRepoName } from '../utils/gitCommand'
 import { zipDist } from './zipDist'
-import { getStdout } from '../utils/execCommand'
-import { updateFilesVersionString } from './versionWriter'
-import { updateChangelog, inputChangelog } from './changelog'
 
-export default async function run (): Promise<number> {
-  if (!await gitBranchIs('develop')) {
-    throw new Error('You can issue a release only from the develop branch')
-  }
-
-  await checkCleanRepo()
-
-  const repoName = await getRepoName()
-  const version = utcVersion({ apple: true })
-
-  const changelogMessage = await inputChangelog()
-  if (!changelogMessage) {
-    console.error('Empty changelog message')
-    return -1
-  }
-  console.log(changelogMessage)
-  await updateChangelog(version, changelogMessage)
-
-  // Update __init__.py + VERSION
-  await updateFilesVersionString(version)
-
-  // Dist zip
+export default async function run (): Promise<string> {
+  const outputPath = 'build.ankiaddon'
   fs.mkdirSync('dist', { recursive: true })
-  await zipDist(`dist/${repoName}_v${version}.ankiaddon`)
-  await zipDist(`dist_${repoName}.ankiaddon`)
-
-  // Commit
-  await getStdout('git add -A')
-  const commitMessageFname = tmp.tmpNameSync()
-  fs.writeFileSync(commitMessageFname, `:bookmark: v${version}\n\n${changelogMessage}`)
-  try {
-    await getStdout(`git commit -F "${commitMessageFname}"`)
-  } finally {
-    fs.unlinkSync(commitMessageFname)
-  }
-
-  // Add tag
-  await getStdout(`git tag v${version}`)
-  await getStdout('git push --tags')
-
-  // Merge to master
-  await getStdout('git checkout master')
-  await getStdout('git merge develop')
-  await getStdout('git checkout develop')
-
-  console.log('Dist + commit done!')
-  return 0
+  zipDist(outputPath)
+  return outputPath
 }

@@ -1,6 +1,7 @@
 import initRun from './init'
 import updateRun from './update'
 import packagerRun from './packager'
+import releaserRun from './releaser'
 
 async function main (argv: string[]): Promise<number> {
   if (argv[1] === 'init') {
@@ -19,7 +20,13 @@ async function main (argv: string[]): Promise<number> {
   }
 
   if (argv[1] === 'package') {
-    return packagerRun()
+    const outputPath = await packagerRun()
+    console.log(`Built to ${outputPath}`)
+    return 0
+  }
+
+  if (argv[1] === 'release') {
+    return releaserRun()
   }
 
   console.log(' $ npx trgkanki-template-cli [init|update|package]')
