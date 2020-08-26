@@ -3,11 +3,18 @@
   "version": "0.1.0",
   "description": "scripts for trgkanki/addon-template",
   "main": "./dist/index.js",
-  "types": "./dist/index.d.ts",
   "bin": {
     "trgkanki-template": "./dist/index.js"
   },
-  "author": "",
+  "keywords": [
+    "anki",
+    "generator"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/trgkanki/trgkanki-template-cli"
+  },
+  "author": "Hyun Woo Park",
   "license": "AGPL3",
   "dependencies": {
     "cli-spinner": "^0.2.10",
@@ -47,7 +54,8 @@
   },
   "husky": {
     "hooks": {
-      "pre-commit": "git-branch-is --not master && lint-staged"
+      "pre-commit": "git-branch-is --not master && lint-staged",
+      "pre-publish": "tsc"
     }
   }
 }
