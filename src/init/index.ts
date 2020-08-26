@@ -21,7 +21,7 @@ import { v4 as uuidV4 } from 'uuid'
 import fs from 'fs'
 
 function mergeMessage (baseBranch: string) {
-  const dateString = dateFormat(new Date(), 'yyyy.MM-dd - %H:%M')
+  const dateString = dateFormat(new Date(), 'yyyy.MM-dd - HH:mm')
   return `🔀 merge from template/${baseBranch} (${dateString})`
 }
 
