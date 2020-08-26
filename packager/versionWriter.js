@@ -15,7 +15,7 @@
 
 const shelljs = require('shelljs')
 const fs = require('fs')
-const { getRepoName } = require('./gitCommand')
+const { getRepoName } = require('../utils/gitCommand')
 
 exports.updateFilesVersionString = async function (newVersion, changelogMessage) {
   const repoName = await getRepoName()

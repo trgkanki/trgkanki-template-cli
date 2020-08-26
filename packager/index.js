@@ -14,15 +14,17 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 const utcVersion = require('utc-version')
-const { checkCleanRepo, getRepoName } = require('./gitCommand')
+const { checkCleanRepo, getRepoName } = require('../utils/gitCommand')
 const { zipDist } = require('./zipDist')
-const { getStdout } = require('./execCommand')
+const { getStdout } = require('../utils/execCommand')
 const { updateFilesVersionString } = require('./versionWriter')
 const { updateChangelog, inputChangelog } = require('./changelog')
 const gitBranchIs = require('git-branch-is')
 
 const fs = require('fs')
 const tmp = require('tmp')
+
+console.log(1)
 
 ;(async function () {
   if (!await gitBranchIs('develop')) {

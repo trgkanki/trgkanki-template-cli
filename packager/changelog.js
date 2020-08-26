@@ -17,10 +17,10 @@ const tmp = require('tmp')
 const fs = require('fs')
 const format = require('date-fns/format')
 
-const { getLatestReleaseVersion, getRepoName } = require('./gitCommand')
+const { getLatestReleaseVersion, getRepoName } = require('../utils/gitCommand')
 const { renderMarkdownHTML } = require('./markedHTMLRenderer')
-const { getStdout } = require('./execCommand')
-const { codeToEmoji } = require('./gitmoji')
+const { getStdout } = require('../utils/execCommand')
+const { codeToEmoji } = require('../utils/gitmoji')
 
 async function getCommitsSinceTag (tag) {
   const command =

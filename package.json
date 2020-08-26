@@ -1,8 +1,11 @@
 {
-  "name": "trgkanki-template",
+  "name": "trgkanki-template-cli",
   "version": "0.1.0",
   "description": "scripts for trgkanki/addon-template",
   "main": "index.js",
+  "bin": {
+    "trgkanki-template": "./index.js"
+  },
   "author": "",
   "license": "AGPL3",
   "dependencies": {
@@ -12,6 +15,7 @@
     "natural-compare-lite": "^1.4.0",
     "node-zip": "^1.1.1",
     "shelljs": "^0.8.4",
+    "tmp": "^0.2.1",
     "utc-version": "^2.0.2",
     "walkdir": "^0.4.1"
   }
