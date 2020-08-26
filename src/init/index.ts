@@ -13,7 +13,8 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import { getStdout, runCommand } from '../utils/execCommand'
+import { getStdout } from '../utils/execCommand'
+import { Spinner } from 'cli-spinner'
 import dateFormat from 'date-fns/format'
 import shelljs from 'shelljs'
 import { v4 as uuidV4 } from 'uuid'
@@ -25,31 +26,50 @@ function mergeMessage (baseBranch: string) {
   return `🔀 merge from template/${baseBranch} (${dateString})`
 }
 
-export default async function run (projectName: string, baseBranch: string) {
+export default async function run (projectName: string, baseBranch: string): Promise<number> {
   console.log(`Generating project ${projectName} from template/${baseBranch}`)
   const uuid = uuidV4()
   console.log(` - addon UUID: ${uuid}`)
 
+  if (fs.existsSync(projectName)) {
+    console.log(' - Project directory already exists. Exiting.')
+    return -1
+  }
+
   fs.mkdirSync(projectName, { recursive: true })
   process.chdir(projectName)
 
-  await runCommand('git init')
-  await runCommand('git remote add template https://github.com/trgkanki/addon_template')
-  await runCommand('git fetch --all')
-  await runCommand('git checkout -b develop')
-  await runCommand(`git merge template/${baseBranch} -m "${mergeMessage(baseBranch)}"`)
+  const spinner = new Spinner('Generating project... %s')
+  spinner.setSpinnerString(18)
+  spinner.start()
 
-  fs.writeFileSync('UUID', uuid)
-  fs.writeFileSync('BASEBRANCH', baseBranch)
+  try {
+    spinner.setSpinnerTitle('Fetching template content')
+    await getStdout('git init')
+    await getStdout('git remote add template https://github.com/trgkanki/addon_template')
+    await getStdout('git fetch --all')
+    await getStdout('git checkout -b develop')
+    await getStdout(`git merge template/${baseBranch} -m "${mergeMessage(baseBranch)}"`)
 
-  // Update files accordingly
-  shelljs.sed('-i', /"name": "addon_template",/, `"name": "${projectName}",`, 'package.json')
-  shelljs.sed('-i', /"name": "addon_template",/, `"name": "${projectName}",`, 'package-lock.json')
-  shelljs.sed('-i', /# addon_template v/, `# ${projectName} v`, 'src/__init__.py')
+    spinner.setSpinnerTitle('Installing npm libraries')
+    await getStdout('npm i')
 
-  await getStdout('npm i')
-  await getStdout('git add -A')
-  await runCommand(`git commit -m "🎉 generated from template/${baseBranch}"`)
+    spinner.setSpinnerTitle('Configuring addon settings')
+    fs.writeFileSync('UUID', uuid)
+    fs.writeFileSync('BASEBRANCH', baseBranch)
 
-  console.log('Project generated from template')
+    // Update files accordingly
+    shelljs.sed('-i', /"name": "addon_template",/, `"name": "${projectName}",`, 'package.json')
+    shelljs.sed('-i', /"name": "addon_template",/, `"name": "${projectName}",`, 'package-lock.json')
+    shelljs.sed('-i', /# addon_template v/, `# ${projectName} v`, 'src/__init__.py')
+
+    await getStdout('git add -A')
+    await getStdout(`git commit -m "🎉 generated from template/${baseBranch}"`)
+    spinner.stop()
+
+    console.log('🎉 Project generated from template!')
+    return 0
+  } finally {
+    spinner.stop()
+  }
 }

@@ -10,6 +10,7 @@
   "author": "",
   "license": "AGPL3",
   "dependencies": {
+    "cli-spinner": "^0.2.10",
     "date-fns": "^2.15.0",
     "git-branch-is": "^4.0.0",
     "marked": "^1.1.1",
@@ -22,6 +23,7 @@
     "walkdir": "^0.4.1"
   },
   "devDependencies": {
+    "@types/cli-spinner": "^0.2.0",
     "@types/git-branch-is": "^4.0.0",
     "@types/marked": "^1.1.0",
     "@types/natural-compare-lite": "^1.4.0",

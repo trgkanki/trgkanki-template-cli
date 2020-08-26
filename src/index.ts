@@ -7,11 +7,9 @@ async function main (argv: string[]): Promise<number> {
     const baseBranch = argv[3]
     if (!projectName || !baseBranch) {
       console.log(' $ npx trgkanki-template init [project name] [base branch]')
-      console.log('   - base branch may be one of "base", "jsinterop", "vuedlg"')
       return -1
     }
-    await initRun(projectName, baseBranch)
-    return 0
+    return initRun(projectName, baseBranch)
   }
   console.log(' $ npx trgkanki-template [init|update|package]')
 
