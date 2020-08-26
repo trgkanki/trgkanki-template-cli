@@ -7,7 +7,7 @@ async function main (argv: string[]): Promise<number> {
     const projectName = argv[2]
     const baseBranch = argv[3]
     if (!projectName || !baseBranch) {
-      console.log(' $ npx trgkanki-template init [project name] [base branch]')
+      console.log(' $ npx trgkanki-template-cli init [project name] [base branch]')
       return -1
     }
     return initRun(projectName, baseBranch)
@@ -22,7 +22,7 @@ async function main (argv: string[]): Promise<number> {
     return packagerRun()
   }
 
-  console.log(' $ npx trgkanki-template [init|update|package]')
+  console.log(' $ npx trgkanki-template-cli [init|update|package]')
 
   return -1
 }

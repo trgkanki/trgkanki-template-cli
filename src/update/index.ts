@@ -37,7 +37,9 @@ export default async function run (baseBranch: string | undefined): Promise<numb
     if (baseBranch) {
       fs.writeFileSync('BASEBRANCH', baseBranch)
       console.error('Commit BASEBRANCH file and re-execute binary without branch arguments.')
-      console.error(' $ ' + process.argv.join(''))
+      console.error(' $ npm run update:template')
+      console.error('        or')
+      console.error(' $ npx trgkanki-template-cli update')
       return 0
     } else {
       console.error('Please specify incoming branch. (BASEBRANCH file not exists)')
