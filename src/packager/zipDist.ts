@@ -13,10 +13,10 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-const NodeZip = require('node-zip')
-const walk = require('walkdir')
-const fs = require('fs')
-const path = require('path')
+import * as NodeZip from 'node-zip'
+import walk from 'walkdir'
+import fs from 'fs'
+import path from 'path'
 
 const ignoreList = [
   '__pycache__',
@@ -24,7 +24,7 @@ const ignoreList = [
   'tests'
 ]
 
-exports.zipDist = function (destination) {
+export function zipDist (outputPath: string) {
   const zip = new NodeZip()
   const paths = walk.sync('src')
   for (const fPath of paths) {
@@ -46,5 +46,5 @@ exports.zipDist = function (destination) {
   }
 
   const data = zip.generate({ base64: false, compression: 'DEFLATE' })
-  fs.writeFileSync(destination, data, 'binary')
+  fs.writeFileSync(outputPath, data, 'binary')
 }

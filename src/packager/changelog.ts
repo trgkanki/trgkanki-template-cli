@@ -13,16 +13,16 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-const tmp = require('tmp')
-const fs = require('fs')
-const format = require('date-fns/format')
+import tmp from 'tmp'
+import fs from 'fs'
+import format from 'date-fns/format'
 
 const { getLatestReleaseVersion, getRepoName } = require('../utils/gitCommand')
 const { renderMarkdownHTML } = require('./markedHTMLRenderer')
 const { getStdout } = require('../utils/execCommand')
 const { codeToEmoji } = require('../utils/gitmoji')
 
-async function getCommitsSinceTag (tag) {
+async function getCommitsSinceTag (tag: string) {
   const command =
     tag ? `git log --first-parent --oneline ${tag}...HEAD`
       : 'git log --first-parent --oneline'
@@ -30,7 +30,7 @@ async function getCommitsSinceTag (tag) {
   return codeToEmoji(log)
 }
 
-exports.inputChangelog = async function () {
+export async function inputChangelog (): Promise<string> {
   const lastVersion = await getLatestReleaseVersion()
   const commitLogs = await getCommitsSinceTag(lastVersion)
 
@@ -50,7 +50,7 @@ exports.inputChangelog = async function () {
   }
 }
 
-exports.updateChangelog = async function (version, changelogMd) {
+export async function updateChangelog (version: string, changelogMd: string) {
   const dateString = format(new Date(), 'yyyy-MM-dd')
   const changelogMarkerComment = '[comment]: # (DO NOT MODIFY. new changelog goes here)'
   const changelogSectionMd = `${changelogMarkerComment}\n\n## ${version} (${dateString})\n\n` + changelogMd
@@ -69,7 +69,7 @@ exports.updateChangelog = async function (version, changelogMd) {
   compileChangelogMarkdown(await getRepoName())
 }
 
-function compileChangelogMarkdown (repoName) {
+function compileChangelogMarkdown (repoName: string) {
   const changelogPath = 'CHANGELOG.md'
   const outputPath = 'src/CHANGELOG.html'
 

@@ -13,18 +13,16 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-const utcVersion = require('utc-version')
-const { checkCleanRepo, getRepoName } = require('../utils/gitCommand')
-const { zipDist } = require('./zipDist')
-const { getStdout } = require('../utils/execCommand')
-const { updateFilesVersionString } = require('./versionWriter')
-const { updateChangelog, inputChangelog } = require('./changelog')
-const gitBranchIs = require('git-branch-is')
+import utcVersion from 'utc-version'
+import tmp from 'tmp'
+import fs from 'fs'
+import gitBranchIs from 'git-branch-is'
 
-const fs = require('fs')
-const tmp = require('tmp')
-
-console.log(1)
+import { checkCleanRepo, getRepoName } from '../utils/gitCommand'
+import { zipDist } from './zipDist'
+import { getStdout } from '../utils/execCommand'
+import { updateFilesVersionString } from './versionWriter'
+import { updateChangelog, inputChangelog } from './changelog'
 
 ;(async function () {
   if (!await gitBranchIs('develop')) {

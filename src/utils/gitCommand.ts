@@ -13,17 +13,17 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-const { getStdout } = require('./execCommand')
-const natCompare = require('natural-compare-lite')
+import { getStdout } from './execCommand'
+import natCompare from 'natural-compare-lite'
 
-exports.checkCleanRepo = async function () {
+export async function checkCleanRepo (): Promise<void> {
   const gitStatus = await getStdout('git status')
   if (gitStatus.indexOf('nothing to commit, working tree clean') === -1) {
     throw new Error('Repo not clean. Only can distribute on clean repo')
   }
 }
 
-exports.getRepoName = async function () {
+export async function getRepoName (): Promise<string> {
   const originUrl = await getStdout('git remote get-url origin')
   const matches = originUrl.match(/.*\/(\w+)\.git/)
   const repoName = matches[1]
@@ -31,7 +31,7 @@ exports.getRepoName = async function () {
   return repoName
 }
 
-exports.getLatestReleaseVersion = async function () {
+export async function getLatestReleaseVersion (): Promise<string | undefined> {
   const tags = (await getStdout('git tag')).split('\n')
   let lastTag = ''
   for (const tag of tags) {

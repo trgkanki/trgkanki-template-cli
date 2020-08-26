@@ -13,11 +13,11 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-const shelljs = require('shelljs')
-const fs = require('fs')
-const { getRepoName } = require('../utils/gitCommand')
+import shelljs from 'shelljs'
+import fs from 'fs'
+import { getRepoName } from '../utils/gitCommand'
 
-exports.updateFilesVersionString = async function (newVersion, changelogMessage) {
+export async function updateFilesVersionString (newVersion: string) {
   const repoName = await getRepoName()
   console.log(`Updating to "${repoName} v${newVersion}"`)
 

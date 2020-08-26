@@ -1,0 +1,44 @@
+{
+    "compilerOptions": {
+      "target": "es6",
+      "module": "commonjs",
+      "strict": true,
+      "declaration": true,
+      "skipLibCheck": true,
+      "importHelpers": true,
+      "moduleResolution": "node",
+      "noLib": false,
+      "preserveConstEnums": true,
+      "experimentalDecorators": true,
+      "esModuleInterop": true,
+      "allowJs": true,
+      "allowSyntheticDefaultImports": true,
+      "sourceMap": true,
+      "baseUrl": ".",
+      "outDir": "dist",
+      "paths": {
+        "@/*": [
+          "src/*"
+        ]
+      },
+      "lib": [
+        "esnext",
+        "dom",
+        "dom.iterable",
+        "scripthost"
+      ]
+    },
+    "include": [
+      "src/**/*.ts",
+      "src/**/*.js"
+    ],
+    "exclude": [
+      "node_modules",
+    ],
+    "linterOptions": {
+      "exclude": [
+        "node_modules/**/*"
+      ]
+    }
+  }
+  

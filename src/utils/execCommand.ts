@@ -13,9 +13,9 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-const exec = require('child_process').exec
+import { exec } from 'child_process'
 
-exports.getStdout = function (command) {
+export function getStdout (command: string): Promise<string> {
   return new Promise((resolve, reject) => {
     exec(command, (err, stdout) => {
       if (err) return reject(err)

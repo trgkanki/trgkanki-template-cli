@@ -2,9 +2,10 @@
   "name": "trgkanki-template-cli",
   "version": "0.1.0",
   "description": "scripts for trgkanki/addon-template",
-  "main": "index.js",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
   "bin": {
-    "trgkanki-template": "./index.js"
+    "trgkanki-template": "./dist/index.js"
   },
   "author": "",
   "license": "AGPL3",
@@ -18,5 +19,38 @@
     "tmp": "^0.2.1",
     "utc-version": "^2.0.2",
     "walkdir": "^0.4.1"
+  },
+  "devDependencies": {
+    "@types/git-branch-is": "^4.0.0",
+    "@types/marked": "^1.1.0",
+    "@types/natural-compare-lite": "^1.4.0",
+    "@types/node": "^14.6.0",
+    "@types/shelljs": "^0.8.8",
+    "@types/tmp": "^0.2.0",
+    "@typescript-eslint/eslint-plugin": "^3.10.1",
+    "@typescript-eslint/parser": "^3.10.1",
+    "eslint": "^7.7.0",
+    "eslint-config-standard": "^14.1.1",
+    "eslint-plugin-import": "^2.22.0",
+    "eslint-plugin-node": "^11.1.0",
+    "eslint-plugin-promise": "^4.2.1",
+    "eslint-plugin-standard": "^4.0.1",
+    "husky": "^4.2.5",
+    "lint-staged": "^10.2.13",
+    "ts-loader": "^8.0.3",
+    "typescript": "^4.0.2"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "git-branch-is --not master && lint-staged"
+    }
+  },
+  "lint-staged": {
+    "*.{js,ts}": [
+      "eslint --fix"
+    ],
+    "*.{scss,css}": [
+      "stylelint --fix"
+    ]
   }
 }

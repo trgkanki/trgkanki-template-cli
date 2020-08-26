@@ -273,18 +273,28 @@ const emojis = [
   }
 ]
 
-function replaceAll (str, searchStr, replaceStr) {
+function replaceAll (str: string, searchStr: string, replaceStr: string) {
   return str.split(searchStr).join(replaceStr)
 }
 
-exports.codeToEmoji = function (text) {
+/**
+ * Converts gitmoji codes to real emojis.
+ *
+ * @param text Input text with gitmoji codes (ex: ":tada:")
+ */
+export function codeToEmoji (text: string): string {
   for (const { emoji, code } of emojis) {
     text = replaceAll(text, code, emoji)
   }
   return text
 }
 
-exports.emojiToCode = function (text) {
+/**
+ * Inverse of codeToEmoji()
+ *
+ * @param text Input text with gitmoji emojis (ex: "🎉")
+ */
+export function emojiToCode (text: string): string {
   for (const { emoji, code } of emojis) {
     text = replaceAll(text, emoji, code)
   }
