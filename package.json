@@ -2,7 +2,7 @@
   "name": "trgkanki-template-cli",
   "version": "0.1.1",
   "description": "scripts for trgkanki/addon-template",
-  "bin": "./dist/index.js",
+  "bin": "./cli-bin.js",
   "keywords": [
     "anki",
     "generator"
