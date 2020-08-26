@@ -46,7 +46,7 @@ export default async function run (projectName: string, baseBranch: string): Pro
     spinner.setSpinnerTitle('Fetching template content')
     await getStdout('git init')
     await getStdout('git remote add template https://github.com/trgkanki/addon_template')
-    await getStdout('git fetch --all')
+    await getStdout(`git fetch template ${baseBranch}`)
     await getStdout('git checkout -b develop')
     await getStdout(`git merge template/${baseBranch} -m "${mergeMessage(baseBranch)}"`)
 
