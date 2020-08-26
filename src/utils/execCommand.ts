@@ -15,11 +15,19 @@
 
 import { exec } from 'child_process'
 
-export function getStdout (command: string): Promise<string> {
+export function getStdout (command: string, echoStdout = false): Promise<string> {
   return new Promise((resolve, reject) => {
-    exec(command, (err, stdout) => {
+    const evListener = exec(command, (err, stdout) => {
       if (err) return reject(err)
       return resolve(stdout)
     })
+    if (echoStdout) {
+      evListener.stdout?.pipe(process.stdout)
+      evListener.stderr?.pipe(process.stderr)
+    }
   })
+}
+
+export async function runCommand (command: string): Promise<void> {
+  await getStdout(command, true)
 }

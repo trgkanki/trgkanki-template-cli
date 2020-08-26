@@ -18,6 +18,7 @@
     "shelljs": "^0.8.4",
     "tmp": "^0.2.1",
     "utc-version": "^2.0.2",
+    "uuid": "^8.3.0",
     "walkdir": "^0.4.1"
   },
   "devDependencies": {
@@ -27,6 +28,7 @@
     "@types/node": "^14.6.0",
     "@types/shelljs": "^0.8.8",
     "@types/tmp": "^0.2.0",
+    "@types/uuid": "^8.3.0",
     "@typescript-eslint/eslint-plugin": "^3.10.1",
     "@typescript-eslint/parser": "^3.10.1",
     "eslint": "^7.7.0",

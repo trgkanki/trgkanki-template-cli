@@ -16,11 +16,6 @@
       "sourceMap": true,
       "baseUrl": ".",
       "outDir": "dist",
-      "paths": {
-        "@/*": [
-          "src/*"
-        ]
-      },
       "lib": [
         "esnext",
         "dom",

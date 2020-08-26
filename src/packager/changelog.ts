@@ -15,14 +15,14 @@
 
 import tmp from 'tmp'
 import fs from 'fs'
-import format from 'date-fns/format'
+import dateFormat from 'date-fns/format'
 
-const { getLatestReleaseVersion, getRepoName } = require('../utils/gitCommand')
-const { renderMarkdownHTML } = require('./markedHTMLRenderer')
-const { getStdout } = require('../utils/execCommand')
-const { codeToEmoji } = require('../utils/gitmoji')
+import { getLatestReleaseVersion, getRepoName } from '../utils/gitCommand'
+import { renderMarkdownHTML } from './markedHTMLRenderer'
+import { getStdout } from '../utils/execCommand'
+import { codeToEmoji } from '../utils/gitmoji'
 
-async function getCommitsSinceTag (tag: string) {
+async function getCommitsSinceTag (tag: string | undefined) {
   const command =
     tag ? `git log --first-parent --oneline ${tag}...HEAD`
       : 'git log --first-parent --oneline'
@@ -50,8 +50,8 @@ export async function inputChangelog (): Promise<string> {
   }
 }
 
-export async function updateChangelog (version: string, changelogMd: string) {
-  const dateString = format(new Date(), 'yyyy-MM-dd')
+export async function updateChangelog (version: string, changelogMd: string): Promise<void> {
+  const dateString = dateFormat(new Date(), 'yyyy-MM-dd')
   const changelogMarkerComment = '[comment]: # (DO NOT MODIFY. new changelog goes here)'
   const changelogSectionMd = `${changelogMarkerComment}\n\n## ${version} (${dateString})\n\n` + changelogMd
 
