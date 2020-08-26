@@ -1,5 +1,6 @@
 import initRun from './init'
 import updateRun from './update'
+import packagerRun from './packager'
 
 async function main (argv: string[]): Promise<number> {
   if (argv[1] === 'init') {
@@ -16,6 +17,11 @@ async function main (argv: string[]): Promise<number> {
     const baseBranch: string | undefined = argv[2]
     return updateRun(baseBranch)
   }
+
+  if (argv[1] === 'package') {
+    return packagerRun()
+  }
+
   console.log(' $ npx trgkanki-template [init|update|package]')
 
   return -1

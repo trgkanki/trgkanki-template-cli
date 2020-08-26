@@ -24,7 +24,7 @@ import { getStdout } from '../utils/execCommand'
 import { updateFilesVersionString } from './versionWriter'
 import { updateChangelog, inputChangelog } from './changelog'
 
-;(async function () {
+export default async function run (): Promise<number> {
   if (!await gitBranchIs('develop')) {
     throw new Error('You can issue a release only from the develop branch')
   }
@@ -36,7 +36,8 @@ import { updateChangelog, inputChangelog } from './changelog'
 
   const changelogMessage = await inputChangelog()
   if (!changelogMessage) {
-    throw Error('Empty changelog message')
+    console.error('Empty changelog message')
+    return -1
   }
   console.log(changelogMessage)
   await updateChangelog(version, changelogMessage)
@@ -69,7 +70,5 @@ import { updateChangelog, inputChangelog } from './changelog'
   await getStdout('git checkout develop')
 
   console.log('Dist + commit done!')
-})().catch(err => {
-  console.error(err)
-  process.exit(-1)
-})
+  return 0
+}
