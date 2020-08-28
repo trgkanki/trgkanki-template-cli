@@ -2,8 +2,32 @@ import initRun from './init'
 import updateRun from './update'
 import packagerRun from './packager'
 import releaserRun from './releaser'
+import { updateCli, shouldUpdateCli } from './cliUpdate'
+import { spawn } from 'child_process'
+
+/**
+ * Run a new instance of cli.
+ *
+ * Note that parent cannot exit here due to stdio being piped into parent.
+ * Somehow stdio: 'inherit' with detached: true doesn't work in windows.
+ * https://github.com/nodejs/node/issues/3596#issuecomment-250890218
+ */
+async function createNewProcess () : Promise<number> {
+  return new Promise((resolve) => {
+    const child = spawn(process.argv[0], process.argv.slice(1), { stdio: 'inherit' }) // Listen for any response:
+    child.on('exit', (code) => {
+      resolve(code || -1)
+    })
+  })
+}
 
 async function main (argv: string[]): Promise<number> {
+  if (await shouldUpdateCli()) {
+    console.log('[CLI update] Update needed: Updating cli...')
+    await updateCli()
+    return createNewProcess()
+  }
+
   if (argv[1] === 'init') {
     const projectName = argv[2]
     const baseBranch = argv[3]
