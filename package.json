@@ -1,6 +1,6 @@
 {
   "name": "trgkanki-template-cli",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "description": "scripts for trgkanki/addon-template",
   "bin": "./cli-bin.js",
   "keywords": [
