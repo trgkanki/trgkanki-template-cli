@@ -13,7 +13,7 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import { runCommand } from '../utils/execCommand'
+import { getStdout, runCommand } from '../utils/execCommand'
 import dateFormat from 'date-fns/format'
 import fs from 'fs'
 import simpleGit from 'simple-git'
@@ -28,6 +28,13 @@ export default async function run (baseBranch: string | undefined): Promise<numb
 
   const status = await git.status()
   if (!status.isClean()) throw new Error('Error: Branch must be clean before merge.')
+
+  // Check if template remote exists, and add one if there isn't
+  const remoteList = new Set((await getStdout('git remote')).split('\n').filter(x => !!x))
+  if (!remoteList.has('template')) {
+    console.log(' - Adding "template" remote')
+    await runCommand('git remote add template https://github.com/trgkanki/addon_template')
+  }
 
   try {
     const repoBaseBranch = fs.readFileSync('BASEBRANCH', { encoding: 'utf-8' }).trim()
