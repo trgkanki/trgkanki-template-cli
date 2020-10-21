@@ -15,15 +15,9 @@
 
 import { getStdout } from '../utils/execCommand'
 import { Spinner } from 'cli-spinner'
-import dateFormat from 'date-fns/format'
 import shelljs from 'shelljs'
 import { v4 as uuidV4 } from 'uuid'
 import fs from 'fs'
-
-function mergeMessage (baseBranch: string) {
-  const dateString = dateFormat(new Date(), 'yyyy.MM-dd - HH:mm')
-  return `🔀 merge from template/${baseBranch} (${dateString})`
-}
 
 export default async function run (projectName: string, baseBranch: string): Promise<number> {
   console.log(`Generating project ${projectName} from template/${baseBranch}`)
@@ -48,7 +42,7 @@ export default async function run (projectName: string, baseBranch: string): Pro
     await getStdout('git remote add template https://github.com/trgkanki/addon_template')
     await getStdout(`git fetch template ${baseBranch}`)
     await getStdout('git checkout -b develop')
-    await getStdout(`git merge template/${baseBranch} -m "${mergeMessage(baseBranch)}"`)
+    await getStdout(`git merge template/${baseBranch}`)
 
     spinner.setSpinnerTitle('Installing npm libraries')
     await getStdout('npm i')
@@ -63,7 +57,7 @@ export default async function run (projectName: string, baseBranch: string): Pro
     shelljs.sed('-i', /# addon_template v/, `# ${projectName} v`, 'src/__init__.py')
 
     await getStdout('git add -A')
-    await getStdout(`git commit -m "🎉 generated from template/${baseBranch}"`)
+    await getStdout(`git commit -m "feat: new addon generated from template/${baseBranch}"`)
     spinner.stop()
 
     console.log('🎉 Project generated from template!')
