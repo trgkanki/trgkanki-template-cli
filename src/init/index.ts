@@ -48,7 +48,7 @@ export default async function run (projectName: string, baseBranch: string): Pro
     await getStdout('npm i')
 
     spinner.setSpinnerTitle('Configuring addon settings')
-    fs.writeFileSync('UUID', uuid)
+    fs.writeFileSync('src/UUID', uuid)
     fs.writeFileSync('BASEBRANCH', baseBranch)
 
     // Update files accordingly
