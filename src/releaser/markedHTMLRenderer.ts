@@ -30,6 +30,7 @@ body {
 .container {
   max-width: 1080px;
   margin: auto;
+  padding: 3em;
 }
 
 .markdown-body .octicon {
