@@ -24,9 +24,11 @@ const ignoreList = [
   'tests'
 ]
 
-export function zipDist (outputPath: string) {
+export function zipDist (packageName: string, outputPath: string) {
   const zip = new NodeZip()
   const paths = walk.sync('src')
+
+  let hasManifest = false
   for (const fPath of paths) {
     let ignore = false
     for (const pattern of ignoreList) {
@@ -38,11 +40,23 @@ export function zipDist (outputPath: string) {
     if (ignore) continue
     if (!fs.statSync(fPath).isFile()) continue
 
+    if (fPath.indexOf('manifest.json') !== -1) {
+      hasManifest = true
+    }
+
     const relPath = path.relative('src/', fPath).replace(/\\/g, '/')
     console.log(' Adding to archive: ' + relPath)
 
     const data = fs.readFileSync(fPath)
     zip.file(relPath, data)
+  }
+
+  // Append manifest.json if not exists.
+  if (!hasManifest) {
+    zip.file('manifest.json', JSON.stringify({
+      package: packageName,
+      name: packageName
+    }))
   }
 
   const data = zip.generate({ base64: false, compression: 'DEFLATE' })

@@ -47,7 +47,7 @@ export default async function run (): Promise<number> {
   await updateFilesVersionString(version)
 
   // Dist zip
-  const outputPath = await packagerRun()
+  const outputPath = await packagerRun({ release: true })
   fs.copyFileSync(outputPath, `dist/${repoName}_v${version}.ankiaddon`)
   fs.copyFileSync(outputPath, `dist_${repoName}.ankiaddon`)
   fs.unlinkSync(outputPath)

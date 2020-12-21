@@ -14,11 +14,15 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import fs from 'fs'
+import path from 'path'
 import { zipDist } from './zipDist'
 
-export default async function run (): Promise<string> {
+export default async function run (options?: { release: boolean }): Promise<string> {
   const outputPath = 'build.ankiaddon'
+  const addonBuildDirName = path.basename(process.cwd())
   fs.mkdirSync('dist', { recursive: true })
-  zipDist(outputPath)
+
+  const packageName = options && options.release ? addonBuildDirName : `${addonBuildDirName} (test version)`
+  zipDist(packageName, outputPath)
   return outputPath
 }
