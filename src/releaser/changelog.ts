@@ -24,7 +24,8 @@ import { codeToEmoji } from '../utils/gitmoji'
 
 async function getCommitsSinceTag (tag: string | undefined) {
   const command =
-    tag ? `git log --first-parent --oneline ${tag}...HEAD`
+    tag
+      ? `git log --first-parent --oneline ${tag}...HEAD`
       : 'git log --first-parent --oneline'
   const log = await getStdout(command)
   return codeToEmoji(log)

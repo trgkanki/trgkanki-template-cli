@@ -13,10 +13,10 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import marked from 'marked'
+import { marked } from 'marked'
 
 export function renderMarkdownHTML (repoName: string, markdown: string): string {
-  const markedHTML = marked(markdown)
+  const markedHTML = marked.parse(markdown)
   return `<!DOCTYPE html>
 <html>
 <head>
