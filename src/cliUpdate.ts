@@ -7,7 +7,8 @@ export async function shouldUpdateCli (): Promise<boolean> {
 
   // Check if this package is installed via `npm run link`
   // if this is local development, skip auto-update check.
-  const globalLinkedPackages = Object.keys(JSON.parse(await getStdout('npm ls -g --depth=0 --link=true --json=true')).dependencies)
+  const dependencyJSON = await getStdout('npm ls -g --depth=0 --link=true --json=true')
+  const globalLinkedPackages = Object.keys(JSON.parse(dependencyJSON).dependencies || {})
   if (globalLinkedPackages.indexOf(packageJson.name) !== -1) {
     console.debug('This package is installed locally via \'npm run link\'. Skipping auto-update check')
     return false
