@@ -14,14 +14,8 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import { getStdout, runCommand } from '../utils/execCommand'
-import dateFormat from 'date-fns/format'
 import fs from 'fs'
 import simpleGit from 'simple-git'
-
-function mergeMessage (baseBranch: string) {
-  const dateString = dateFormat(new Date(), 'yyyy.MM-dd - HH:mm')
-  return `🔀 merge from template/${baseBranch} (${dateString})`
-}
 
 export default async function run (baseBranch: string | undefined): Promise<number> {
   const git = simpleGit()
@@ -56,7 +50,7 @@ export default async function run (baseBranch: string | undefined): Promise<numb
 
   await git.fetch('template', baseBranch)
   try {
-    await runCommand(`git merge template/${baseBranch} -m "${mergeMessage(baseBranch)}"`)
+    await runCommand(`git merge template/${baseBranch}`)
   } catch {
     console.log('## Resolve conflicts and commit.')
     return -1

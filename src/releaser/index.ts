@@ -55,7 +55,7 @@ export default async function run (): Promise<number> {
   // Commit
   await getStdout('git add -A')
   const tmpCommitMsgFileName = tmp.tmpNameSync()
-  fs.writeFileSync(tmpCommitMsgFileName, `version: v${version}\n\n${changelogMessage}`)
+  fs.writeFileSync(tmpCommitMsgFileName, `build(release): bump to v${version}\n\n${changelogMessage}`)
   try {
     await getStdout(`git commit -F "${tmpCommitMsgFileName}"`)
   } finally {
