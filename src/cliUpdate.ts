@@ -5,12 +5,12 @@ export async function shouldUpdateCli (): Promise<boolean> {
   // eslint-disable-next-line @typescript-eslint/no-var-requires
   const packageJson = require('../package.json')
 
-  // Check if this package is installed via `npm run link`
+  // Check if this package is installed via `npm link`
   // if this is local development, skip auto-update check.
   const dependencyJSON = await getStdout('npm ls -g --depth=0 --link=true --json=true')
   const globalLinkedPackages = Object.keys(JSON.parse(dependencyJSON).dependencies || {})
   if (globalLinkedPackages.indexOf(packageJson.name) !== -1) {
-    console.debug('This package is installed locally via \'npm run link\'. Skipping auto-update check')
+    console.debug('This package is installed locally via \'npm link\'. Skipping auto-update check')
     return false
   }
 
