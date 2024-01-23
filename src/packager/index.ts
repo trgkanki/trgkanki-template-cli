@@ -23,6 +23,6 @@ export default async function run (options?: { release: boolean }): Promise<stri
   fs.mkdirSync('dist', { recursive: true })
 
   const packageName = options && options.release ? addonBuildDirName : `${addonBuildDirName} (test version)`
-  zipDist(packageName, outputPath)
+  await zipDist(packageName, outputPath)
   return outputPath
 }

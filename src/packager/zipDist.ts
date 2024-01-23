@@ -13,7 +13,7 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import NodeZip from 'node-zip'
+import JSZip from 'jszip'
 import walk from 'walkdir'
 import fs from 'fs'
 import path from 'path'
@@ -24,8 +24,8 @@ const ignoreList = [
   'tests'
 ]
 
-export function zipDist (packageName: string, outputPath: string) {
-  const zip = new NodeZip()
+export async function zipDist (packageName: string, outputPath: string) {
+  const zip = new JSZip()
   const paths = walk.sync('src')
 
   let hasManifest = false
@@ -51,14 +51,17 @@ export function zipDist (packageName: string, outputPath: string) {
     zip.file(relPath, data)
   }
 
+  console.log('hasManifest', hasManifest)
+
   // Append manifest.json if not exists.
   if (!hasManifest) {
+    console.log('Generating manifest.json')
     zip.file('manifest.json', JSON.stringify({
       package: packageName,
       name: packageName
     }))
   }
 
-  const data = zip.generate({ base64: false, compression: 'DEFLATE' })
-  fs.writeFileSync(outputPath, data, 'binary')
+  const data = await zip.generateAsync({ type: 'nodebuffer' })
+  fs.writeFileSync(outputPath, data)
 }
