@@ -15,7 +15,6 @@
 
 import { getStdout } from '../utils/execCommand'
 import { Spinner } from 'cli-spinner'
-import shelljs from 'shelljs'
 import { v4 as uuidV4 } from 'uuid'
 import fs from 'fs'
 
@@ -52,9 +51,25 @@ export default async function run (projectName: string, baseBranch: string): Pro
     fs.writeFileSync('BASEBRANCH', baseBranch)
 
     // Update files accordingly
-    shelljs.sed('-i', /"name": "addon_template",/, `"name": "${projectName}",`, 'package.json')
-    shelljs.sed('-i', /"name": "addon_template",/, `"name": "${projectName}",`, 'package-lock.json')
-    shelljs.sed('-i', /# addon_template v/, `# ${projectName} v`, 'src/__init__.py')
+    {
+      const packageJson = JSON.parse(fs.readFileSync('package.json', 'utf8'))
+      packageJson.name = projectName
+      fs.writeFileSync('package.json', JSON.stringify(packageJson, null, 2))
+    }
+    {
+      const packageLockJson = JSON.parse(fs.readFileSync('package-lock.json', 'utf8'))
+      packageLockJson.name = projectName
+      // for lockfile v2+
+      if (packageLockJson.packages && packageLockJson.packages['']) {
+        packageLockJson.packages[''].name = projectName
+      }
+      fs.writeFileSync('package-lock.json', JSON.stringify(packageLockJson, null, 2))
+    }
+    {
+      const initPy = fs.readFileSync('src/__init__.py', 'utf8')
+      const newInitPy = initPy.replace(/# addon_template v/, `# ${projectName} v`)
+      fs.writeFileSync('src/__init__.py', newInitPy)
+    }
 
     await getStdout('git add -A')
     await getStdout(`git commit -m "feat: new addon generated from template/${baseBranch}"`)

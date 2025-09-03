@@ -13,7 +13,6 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import shelljs from 'shelljs'
 import fs from 'fs'
 import { getRepoName } from '../utils/gitCommand'
 
@@ -21,8 +20,27 @@ export async function updateFilesVersionString (newVersion: string) {
   const repoName = await getRepoName()
   console.log(`Updating to "${repoName} v${newVersion}"`)
 
-  shelljs.sed('-i', /"version": "(.+?)"/, `"version": "${newVersion}"`, 'package.json')
-  shelljs.sed('-i', /^ {2}"version": "(.+?)"/, `  "version": "${newVersion}"`, 'package-lock.json')
-  shelljs.sed('-i', /^# .+v(\d+)\.(\d+)\.(\d+)[i.](\d+)$/m, `# ${repoName} v${newVersion}`, 'src/__init__.py')
+  {
+    const packageJson = JSON.parse(fs.readFileSync('package.json', 'utf8'))
+    packageJson.version = newVersion
+    fs.writeFileSync('package.json', JSON.stringify(packageJson, null, 2))
+  }
+
+  {
+    const packageLockJson = JSON.parse(fs.readFileSync('package-lock.json', 'utf8'))
+    packageLockJson.version = newVersion
+    // for lockfile v2+
+    if (packageLockJson.packages && packageLockJson.packages['']) {
+      packageLockJson.packages[''].version = newVersion
+    }
+    fs.writeFileSync('package-lock.json', JSON.stringify(packageLockJson, null, 2))
+  }
+
+  {
+    const initPy = fs.readFileSync('src/__init__.py', 'utf8')
+    const newInitPy = initPy.replace(/^# .+v(\d+)\.(\d+)\.(\d+)[i.](\d+)$/m, `# ${repoName} v${newVersion}`)
+    fs.writeFileSync('src/__init__.py', newInitPy)
+  }
+
   fs.writeFileSync('src/VERSION', newVersion)
 }
