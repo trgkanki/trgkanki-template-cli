@@ -64,13 +64,14 @@ export default async function run (): Promise<number> {
 
   // Add tag
   await getStdout(`git tag v${version}`)
-  await getStdout('git push --tags')
 
   // Merge to master
   await getStdout('git checkout master')
   await getStdout('git merge develop')
   await getStdout('git checkout develop')
 
-  console.log('Dist + commit done!')
+  console.log('Dist + commit done!: version ' + version)
+  console.log('You can now push to remote and publish the release on GitHub')
+  console.log('  make sure to push tags too: git push --tags')
   return 0
 }
