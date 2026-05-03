@@ -24,7 +24,7 @@ export async function checkCleanRepo (): Promise<void> {
 }
 
 export async function getRepoName (): Promise<string> {
-  const originUrl = await getStdout('git remote get-url origin')
+  const originUrl = (await getStdout('git remote get-url origin')).trim()
   const matches = originUrl.match(/^.*\/(.+)(\.git)?$/)
   if (!matches) throw new Error('failed to get origin')
   const repoName = matches[1]
